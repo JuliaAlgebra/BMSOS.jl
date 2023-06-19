@@ -10,5 +10,6 @@ NLopt = "76087f3c-5699-56af-9a33-bf431cd00edd"
 TrigPolys = "bbdedc48-cb31-4a37-9fe3-b015aecc8dd3"
 
 [compat]
+AutoGrad = "1"
 NLopt = "0.6"
 julia = "1.6"
