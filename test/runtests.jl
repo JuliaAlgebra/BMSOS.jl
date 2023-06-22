@@ -5,7 +5,10 @@ import TrigPolys
 using BMSOS
 using Test
 
-function test_opt(n = 1000)
+import Random
+Random.seed!(0)
+
+function test_decomp(n = 20)
     p = TrigPolys.random_trig_poly(n)
     s = p.n * 2 + 1
     r = 2
@@ -24,6 +27,9 @@ function test_opt(n = 1000)
     U = randn(r, xn)
     @test f(U) ≈ BMSOS.ffft(U, p)
     @test fgrad(U) ≈ BMSOS.fgradfft(U, p) * 4
+
+    result = BMSOS.sos_decomp(p, rank = 2, init = BMSOS.find_xinit_norm(r, n))
+    @test result.ret == :XTOL_REACHED
 end
 
 function runtests()
