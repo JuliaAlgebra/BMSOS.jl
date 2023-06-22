@@ -62,11 +62,12 @@ function MOI.add_constraint(
 end
 
 function MOI.empty!(optimizer::Optimizer)
-    optimizer.poly = nothing
+    return optimizer.poly = nothing
 end
 MOI.is_empty(optimizer::Optimizer) = optimizer.poly === nothing
 function MOI.optimize!(optimizer::Optimizer)
-    options = Dict{Symbol,Any}(Symbol(key) => val for (key, val) in optimizer.options)
+    options =
+        Dict{Symbol,Any}(Symbol(key) => val for (key, val) in optimizer.options)
     ret = sos_decomp(optimizer.poly; options...)
     optimizer.fvals = ret.fvals
     optimizer.Uopt = ret.Uopt
@@ -88,7 +89,11 @@ function MOI.get(optimizer::Optimizer, ::MOI.RawStatusString)
     return string(optimizer.ret)
 end
 
-function MOI.get(optimizer::Optimizer, ::SumOfSquares.GramMatrixAttribute, ::MOI.ConstraintIndex{MOI.VectorAffineFunction{Float64}})
+function MOI.get(
+    optimizer::Optimizer,
+    ::SumOfSquares.GramMatrixAttribute,
+    ::MOI.ConstraintIndex{MOI.VectorAffineFunction{Float64}},
+)
     U = optimizer.Uopt
     Q = U' * U
     return SumOfSquares.GramMatrix(Q, optimizer.sampled.basis)

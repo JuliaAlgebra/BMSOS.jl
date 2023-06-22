@@ -39,7 +39,12 @@ Evaluates `||b'U'Ub - p||^2` where `b` is the polynomial basis and set its
 gradient to `grad` with `2r + 1` calls to FFT instead of `3r + 2` if
 `ffft` and `fgradfft` are called separately.
 """
-function value_and_gradient!(grad, U::AbstractMatrix, p::TrigPolys.TrigPoly; mapfn = Base.map)
+function value_and_gradient!(
+    grad,
+    U::AbstractMatrix,
+    p::TrigPolys.TrigPoly;
+    mapfn = Base.map,
+)
     _, xs, _, Up = get_Up(U, p)
     uB = mapfn(TrigPolys.evaluate, eachrow(Up))
     d = sum(u .^ 2 for u in uB) - TrigPolys.evaluate(p)
@@ -98,8 +103,7 @@ function find_xinit_norm(r, n)
     return 2 * a / b
 end
 
-function _opt()
-end
+function _opt() end
 
 """
     function sos_decomp(
