@@ -6,7 +6,11 @@ version = "0.0.1-DEV"
 [deps]
 AutoGrad = "6710c13c-97f1-543f-91c5-74e8f7d95b35"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+MathOptInterface = "b8f27783-ece8-5eb3-8dc8-9495eed66fee"
+MultivariatePolynomials = "102ac46a-7ee4-5c85-9060-abc95bfdeaa3"
 NLopt = "76087f3c-5699-56af-9a33-bf431cd00edd"
+SemialgebraicSets = "8e049039-38e8-557d-ae3a-bc521ccf6204"
+SumOfSquares = "4b9e565b-77fc-50a5-a571-1244f986bda1"
 TrigPolys = "bbdedc48-cb31-4a37-9fe3-b015aecc8dd3"
 
 [compat]
