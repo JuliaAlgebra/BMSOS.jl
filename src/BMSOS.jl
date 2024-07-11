@@ -5,6 +5,8 @@ using LinearAlgebra
 import NLopt
 import TrigPolys
 import AutoGrad
+import StarAlgebras as SA
+import MultivariateBases as MB
 
 """
     fgradfft(U::AbstractArray, p::TrigPolys.TrigPoly; mapfn = Base.map)
@@ -155,6 +157,18 @@ function sos_decomp(
     stats = @timed (minf, minx, ret) = NLopt.optimize(opt, xinit)
     Uopt = reshape(minx, rank, xn)
     return (; fvals, Uopt, ret, stats)
+end
+
+function sos_decomp(p::SA.AlgebraElement; args...)
+    d = div(MP.maxdegree(SA.basis(p)), 2)
+    @assert MP.nvariables(MB.explicit_basis(p)) == 1
+    a = SA.coeffs(p, MB.SubBasis{MB.Trigonometric}(MP.monomials(MP.variables(p), 0:2d)))
+    t = TrigPolys.TrigPoly(
+        a[1],
+        a[2:2:2d],
+        a[3:2:(2d+1)],
+    )
+    return sos_decomp(t; args...)
 end
 
 function sos_opt(
