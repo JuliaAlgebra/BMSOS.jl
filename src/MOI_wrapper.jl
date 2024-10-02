@@ -22,9 +22,19 @@ mutable struct Optimizer <: MOI.AbstractOptimizer
     solve_time::Float64
     silent::Bool
     function Optimizer()
-        return new(nothing, copy(DEFAULT), nothing, nothing, nothing, NaN, false)
+        return new(
+            nothing,
+            copy(DEFAULT),
+            nothing,
+            nothing,
+            nothing,
+            NaN,
+            false,
+        )
     end
 end
+
+MOI.get(::Optimizer, ::MOI.SolverName) = "BMSOS"
 
 function MOI.supports(optimizer::Optimizer, attr::MOI.RawOptimizerAttribute)
     return haskey(optimizer.options, attr.name)
@@ -71,7 +81,9 @@ function MOI.add_constraint(
 end
 
 function MOI.empty!(optimizer::Optimizer)
-    return optimizer.poly = nothing
+    optimizer.poly = nothing
+    optimizer.solve_time = NaN
+    return
 end
 
 MOI.is_empty(optimizer::Optimizer) = optimizer.poly === nothing

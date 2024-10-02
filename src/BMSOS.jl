@@ -162,12 +162,11 @@ end
 function sos_decomp(p::SA.AlgebraElement; args...)
     d = div(MP.maxdegree(SA.basis(p)), 2)
     @assert MP.nvariables(MB.explicit_basis(p)) == 1
-    a = SA.coeffs(p, MB.SubBasis{MB.Trigonometric}(MP.monomials(MP.variables(p), 0:2d)))
-    t = TrigPolys.TrigPoly(
-        a[1],
-        a[2:2:2d],
-        a[3:2:(2d+1)],
+    a = SA.coeffs(
+        p,
+        MB.SubBasis{MB.Trigonometric}(MP.monomials(MP.variables(p), 0:2d)),
     )
+    t = TrigPolys.TrigPoly(a[1], a[2:2:2d], a[3:2:(2d+1)])
     return sos_decomp(t; args...)
 end
 
