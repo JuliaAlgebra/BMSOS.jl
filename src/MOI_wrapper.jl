@@ -1,4 +1,5 @@
 import MultivariatePolynomials as MP
+import MultivariateBases as MB
 import SemialgebraicSets
 import MathOptInterface as MOI
 import SumOfSquares
@@ -57,7 +58,8 @@ function MOI.add_constraint(
         error("Nonconstant polynomials are not supported yet!")
     end
     # FIXME don't ignore `set.certificate`
-    optimizer.poly = MP.polynomial(func.constants, set.monomials)
+    optimizer.poly =
+        MP.polynomial(func.constants, MB.keys_as_monomials(set.basis))
     return MOI.ConstraintIndex{typeof(func),typeof(set)}(0)
 end
 
