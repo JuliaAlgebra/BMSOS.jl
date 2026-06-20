@@ -17,7 +17,7 @@ function fgradfft(U::AbstractMatrix, p::TrigPolys.TrigPoly; mapfn = Base.map)
     uB = mapfn(TrigPolys.evaluate, eachrow(Up))
     d = sum(u .^ 2 for u in uB) - TrigPolys.evaluate(p)
     g = reduce(hcat, mapfn(u -> TrigPolys.evaluateT(u .* d), uB))'
-    return [g[:, 1:xs+1] g[:, 2*xs+2:3*xs+1]]
+    return [g[:, 1:(xs+1)] g[:, (2*xs+2):(3*xs+1)]]
 end
 
 """
@@ -49,7 +49,7 @@ function value_and_gradient!(
     uB = mapfn(TrigPolys.evaluate, eachrow(Up))
     d = sum(u .^ 2 for u in uB) - TrigPolys.evaluate(p)
     g = reduce(hcat, mapfn(u -> TrigPolys.evaluateT(u .* d), uB))'
-    grad[:] = reshape([g[:, 1:xs+1] g[:, 2*xs+2:3*xs+1]], :)
+    grad[:] = reshape([g[:, 1:(xs+1)] g[:, (2*xs+2):(3*xs+1)]], :)
     return sum(d .^ 2)
 end
 
@@ -86,7 +86,7 @@ function get_Up(U::AbstractArray, p::TrigPolys.TrigPoly)
     # FIXME why not `2 * xs + 2` ?
     xn = 2 * xs + 1
     @assert xn == n "Inconsistent matrix dimension"
-    Up = [U[:, 1:xs+1] zeros(r, xs) U[:, xs+2:xn] zeros(r, xs)]
+    Up = [U[:, 1:(xs+1)] zeros(r, xs) U[:, (xs+2):xn] zeros(r, xs)]
     return r, xs, xn, Up
 end
 
@@ -171,7 +171,7 @@ function sos_opt(
     nvars = rank * xn + 1
 
     function f(x)
-        slices = [x[xn*(i-1)+1:xn*i] for i in 1:rank]
+        slices = [x[(xn*(i-1)+1):(xn*i)] for i in 1:rank]
         gam = last(x)
         uB = sum([evaluate(pad_to(u, p.n)) .^ 2 for u in slices])
         return sum((uB - evaluate(p) .+ gam) .^ 2)
@@ -203,7 +203,7 @@ function sos_opt(
     @time (minf, minx, ret) = NLopt.optimize(opt, xinit)
     @show ret
 
-    Uopt = reshape(minx[1:nvars-1], rank, xn)
+    Uopt = reshape(minx[1:(nvars-1)], rank, xn)
     xopt = last(minx)
     return f, fgrad, fvals, xvals, Uopt, xopt, ret, minx
 end

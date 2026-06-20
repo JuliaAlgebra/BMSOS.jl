@@ -18,7 +18,7 @@ function test_decomp(n = 20)
     B = reduce(hcat, [TrigPolys.basis(p.n, xi) for xi in samples])
     ps = reshape(p.(samples), 1, s)
     function f(U)
-        Up = [U[:, 1:xs+1] zeros(r, xs) U[:, xs+2:xn] zeros(r, xs)]
+        Up = [U[:, 1:(xs+1)] zeros(r, xs) U[:, (xs+2):xn] zeros(r, xs)]
         return sum((sum((Up * B) .^ 2, dims = 1) - ps) .^ 2)
     end
     #f(U) = sum((sum((U*B).^2, dims=1)-ps).^2)
