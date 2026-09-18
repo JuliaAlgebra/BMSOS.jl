@@ -16,6 +16,7 @@ TrigPolys = "bbdedc48-cb31-4a37-9fe3-b015aecc8dd3"
 
 [compat]
 AutoGrad = "1"
+LinearAlgebra = "1.10"
 MathOptInterface = "1"
 MultivariateBases = "0.3"
 MultivariatePolynomials = "0.5"
