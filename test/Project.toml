@@ -1,7 +1,12 @@
 [deps]
 AutoGrad = "6710c13c-97f1-543f-91c5-74e8f7d95b35"
 BMSOS = "288039e9-afd1-4944-b7ae-3ac2e056f6e9"
+DynamicPolynomials = "7c1d4256-1411-5781-91ec-d7bc3513ac07"
 MathOptInterface = "b8f27783-ece8-5eb3-8dc8-9495eed66fee"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+SumOfSquares = "4b9e565b-77fc-50a5-a571-1244f986bda1"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 TrigPolys = "bbdedc48-cb31-4a37-9fe3-b015aecc8dd3"
+
+[sources]
+BMSOS = {path = ".."}
