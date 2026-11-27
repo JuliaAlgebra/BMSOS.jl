@@ -1,6 +1,9 @@
 module TestRandom
 
 import AutoGrad
+import DynamicPolynomials
+import MathOptInterface as MOI
+import SumOfSquares as SOS
 import TrigPolys
 using BMSOS
 using Test
@@ -30,6 +33,21 @@ function test_decomp(n = 20)
 
     result = BMSOS.sos_decomp(p, rank = 2, init = BMSOS.find_xinit_norm(r, n))
     @test result.ret == :XTOL_REACHED
+end
+
+function test_sos_constraint()
+    DynamicPolynomials.@polyvar x
+    basis = SOS.SubBasis{SOS.Monomial}([x^0, x, x^2])
+    set = SOS.moi_set(SOS.SOSCone(), basis, basis, basis)
+    func = MOI.VectorAffineFunction(
+        MOI.VectorAffineTerm{Float64}[],
+        [1.0, 4.0, 4.0],
+    )
+    optimizer = BMSOS.Optimizer()
+    @test MOI.supports_constraint(optimizer, typeof(func), typeof(set))
+    MOI.add_constraint(optimizer, func, set)
+    @test optimizer.poly == (1 + 2x)^2
+    return
 end
 
 function runtests()

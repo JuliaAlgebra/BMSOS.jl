@@ -21,7 +21,7 @@ mutable struct Optimizer <: MOI.AbstractOptimizer
     Uopt::Union{Nothing,Matrix{Float64}}
     ret::Union{Nothing,Symbol}
     function Optimizer()
-        return new(nothing, copy(DEFAULT), nothing, nothing, nothing, nothing)
+        return new(nothing, copy(DEFAULT), nothing, nothing, nothing)
     end
 end
 
