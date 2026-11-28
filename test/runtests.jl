@@ -46,7 +46,7 @@ function test_sos_constraint()
     optimizer = BMSOS.Optimizer()
     @test MOI.supports_constraint(optimizer, typeof(func), typeof(set))
     MOI.add_constraint(optimizer, func, set)
-    @test optimizer.poly == (1 + 2x)^2
+    @test DynamicPolynomials.polynomial(optimizer.poly) == (1 + 2x)^2
     return
 end
 
